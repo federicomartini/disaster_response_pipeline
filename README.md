@@ -59,21 +59,21 @@ techniques to find the optimal model thanks to the **Cross Validation** features
 
 <a name="files"></a>
 ## File Descriptions
-    * **data/process_data.py**
+   * **data/process_data.py**
         Python script to Extract, Transform and Load (ETL) data about **messages** and **categories** into the **Database**.
-    * **data/ETL Pipeline Preparation.ipynb**
+   * **data/ETL Pipeline Preparation.ipynb**
         Jupyter Notebook that contains all the steps for the ETL Process
-    * **data/disaster_messages.csv, data/disaster_categories.csv**
+   * **data/disaster_messages.csv, data/disaster_categories.csv**
         Raw data about messages and categories
-    * **data/DisasterResponse.db**
+   * **data/DisasterResponse.db**
         Database created by the **process_data.py** script (ETL process output).
-    * **models/train_classifier.py**
+   * **models/train_classifier.py**
         Script to create the Pipeline, train and test the model.
-    * **models/ML Pipeline Preparation.ipynb**
+   * **models/ML Pipeline Preparation.ipynb**
         Jupyter Notebook that contains all the steps to train and test the model, and create a pickle file for the model.
-    * **models/multioutclassifier.pickle**
+   * **models/multioutclassifier.pickle**
         Pickle file containing the optimal model calculated with the **train_classifier.py**
-    * **app/run.py**
+   * **app/run.py**
         Script that runs a **Web Page** that takes advantage of the **model** you created with the above scripts.
 
 <a name="screenshots"></a>
