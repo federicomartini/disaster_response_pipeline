@@ -15,6 +15,16 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    """Tokenize function 
+    
+    Arguments:
+        text : String
+            Text to tokenize
+ 
+    Output:
+        clean_tokens : List
+            List of clean tokens after word-tokenizing and Lemmatizing the text
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -37,6 +47,15 @@ model = joblib.load("../models/multioutclassifier.pickle")
 @app.route('/')
 @app.route('/index')
 def index():
+    """Index function 
+    
+    Arguments:
+        None
+ 
+    Output:
+        render_template : Render Template
+            Render web page with plotly graphs
+    """
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
@@ -124,6 +143,15 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    """Go function 
+    
+    Arguments:
+        None
+ 
+    Output:
+        render_template : Render Template
+            Render the go.html Please see that file. 
+    """
     # save user input in query
     query = request.args.get('query', '') 
 
@@ -140,6 +168,14 @@ def go():
 
 
 def main():
+    """Main function 
+    
+    Arguments:
+        None
+ 
+    Output:
+        None 
+    """
     app.run(host='0.0.0.0', port=3000, debug=True)
 
 

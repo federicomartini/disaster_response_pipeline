@@ -19,6 +19,20 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 import pickle
 
 def load_data(database_filepath):
+    """Load data from a SQLite Database to create the DataFrames about messages, categories and a series containing the category columns 
+    
+    Arguments:
+        database_filepath : String
+            The location of the SQLite Database
+ 
+    Output:
+        X : DataFrame
+            The Pandas DataFrame containing the messages
+        Y : DataFrame
+            The Pandas DataFrame containing the categories
+        categories : Pandas Series
+            The Pandas Series containing the column names of the categories
+    """
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table("disasterResponse", engine)
     X = df['message']
@@ -28,6 +42,16 @@ def load_data(database_filepath):
     return X, Y, categories
 
 def tokenize(text):
+    """Tokenize function 
+    
+    Arguments:
+        text : String
+            Text to tokenize
+ 
+    Output:
+        clean_tokens : List
+            List of clean tokens after cleaning, word-tokenizing and Lemmatizing the text
+    """
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     detected_urls = re.findall(url_regex, text)
     for url in detected_urls:
@@ -46,6 +70,12 @@ def tokenize(text):
 
 
 def build_model():
+    """Build the model 
+ 
+    Output:
+        model : Model
+            The model created
+    """
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -63,6 +93,21 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Model evaluation function 
+    
+    Arguments:
+        model : Model
+            The Model to evaluate
+        X_test : Pandas DataFrame
+            The DataFrame containing the features
+        Y_test : Pandas DataFrame
+            The DataFrame containing the labels
+        category_names : List of Strings
+            The list of the category names
+            
+    Output:
+        None
+    """
     y_pred = model.predict(X_test)
     
     for column in category_names:
@@ -70,11 +115,33 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """Save the model into a file 
+    
+    Arguments:
+        model : Model
+            The Model to evaluate
+        model_filepath : String
+            The location of the model file to save
+
+    Output:
+        None
+    """
     with open(model_filepath, 'wb') as file:
         pickle.dump(model, file)
 
 
 def main():
+    """Function to execute the whole train process 
+    
+    Steps:
+        1) Load data from the SQLite Database
+        2) Train the model using the GridSearchCV
+        3) Test and Evaluate the model 
+        4) Save the model into a file
+
+    Output:
+        None
+    """
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))

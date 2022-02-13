@@ -5,6 +5,18 @@ from sqlalchemy import create_engine
 from pandas.io import sql
 
 def load_data(messages_filepath, categories_filepath):
+    """Load messages and categories the merge them into a DataFrame on the ID field
+    
+    Arguments:
+        messages_filepath : String
+            The messages CSV file location
+        categories_filepath : String
+            The categories CSV file location
+    Output:
+        df : DataFrame
+            The Pandas DataFrame containing the merged messages and categories
+    """
+    
     # load messages dataset
     messages = pd.read_csv(messages_filepath)
     # load categories dataset
@@ -15,6 +27,15 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
+    """Clean the Pandas DataFrame
+    
+    Arguments:
+        df : DataFrame
+            The Pandas DataFrame with messages and categories
+    Output:
+        df : DataFrame
+            The Pandas DataFrame cleaned
+    """
     # create a dataframe of the 36 individual category columns
     categories = df.categories.str.split(";", expand=True)
     # select the first row of the categories dataframe
@@ -39,6 +60,15 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+    """Save the Pandas DataFrame into a SQL Database
+    
+    Arguments:
+        df : DataFrame
+            The cleaned Pandas DataFrame with messages and categories
+        database_filename : String
+            The file name of the SQL Database to create 
+    """
+    
     engine = create_engine('sqlite:///DisasterResponse.db')
     table_name = 'disasterResponse'
     sql.execute('DROP TABLE IF EXISTS %s'%table_name, engine)
@@ -46,6 +76,14 @@ def save_data(df, database_filename):
 
 
 def main():
+    """
+    Main function to perform the ETL Process
+    
+    Steps:
+        - Merge messages and categories from the CSV files into a Pandas DataFrame
+        - Clean the Pandas DataFrame
+        - Load data into a SQL Database
+    """
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
