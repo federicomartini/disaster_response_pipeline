@@ -43,9 +43,18 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    #Data for visuals - Top 5 Common categories
+    top_category_names = df.drop(['id', 'message', 'original', 'genre', 'related'], axis=1).sum().sort_values(ascending=False)[0:5].index
+    top_category_values = df.drop(['id', 'message', 'original', 'genre', 'related'], axis=1).sum().sort_values(ascending=False)[0:5].values
+    
+    #Data for visuals - Least 5 Common categories
+    least_category_names = df.drop(['id', 'message', 'original', 'genre', 'related'], axis=1).sum().sort_values(ascending=False)[-5:].index
+    least_category_values = df.drop(['id', 'message', 'original', 'genre', 'related'], axis=1).sum().sort_values(ascending=False)[-5:].values
+    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+            # GRAPH 1 - genre graph
         {
             'data': [
                 Bar(
@@ -61,6 +70,44 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        # GRAPH 2 - Top 5 Categories
+        {
+            'data': [
+                Bar(
+                    x=top_category_names,
+                    y=top_category_values
+                )
+            ],
+
+            'layout': {
+                'title': 'Top 5 Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
+        },
+        # GRAPH 3 - Least 5 Categories
+        {
+            'data': [
+                Bar(
+                    x=least_category_names,
+                    y=least_category_values
+                )
+            ],
+
+            'layout': {
+                'title': 'Least 5 Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
                 }
             }
         }
