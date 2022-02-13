@@ -35,20 +35,21 @@ Moreover, you need to run code written in **Python 3** and **HTML**.
 ## Instructions
 
 The repository contains **Python scripts**. Below are the instructions to run the scripts:
-    * **data/process_data.py**
+
+   * **data/process_data.py**
         This script Extract, Transform and Load (ETL) data about **messages** and **categories** into the **Database**. To execute
         it you should go into the **data/** folder and run the command below (replace the paths placeholders with the files 
         path on your enviroment):
         `python process_data.py path-to-messages-csv-file path-to-categories-csv-file path-to-disaster-db`
-    * **models/train_classifier.py**
+   * **models/train_classifier.py**
         This script creates the Pipeline, train and test the model. To execute it you should go into the **models/** folder and
         run the command below:
         `python train_classifier.py path-to-disaster-db models/multioutclassifier.pickle`
-    * **app/run.py**
+   * **app/run.py**
         This script runs a **Web Page** that takes advantage of the **model** you created with the above scripts. To execute it
         you should run the command below:
         `python run.py`
-    * **Web Page**
+   * **Web Page**
         The web page is accessible at the address http://0.0.0.0:3000/. 
 
 <a name="motivation"></a>
