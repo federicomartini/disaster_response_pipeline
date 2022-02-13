@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
+from pandas.io import sql
 
 def load_data(messages_filepath, categories_filepath):
     # load messages dataset
@@ -17,10 +18,10 @@ def clean_data(df):
     # create a dataframe of the 36 individual category columns
     categories = df.categories.str.split(";", expand=True)
     # select the first row of the categories dataframe
-    row = categories.head(1)
+    row = categories.iloc[0,:]
     category_colnames = row.apply(lambda x: x[:-2])
     # rename the columns of `categories`
-    categories.columns = category_colnames.columns
+    categories.columns = category_colnames
     
     for column in categories:
         # set each value to be the last character of the string
@@ -38,8 +39,10 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
-    engine = create_engine('sqlite:///' + database_filename)
-    df.to_sql('disasterResponse', engine, index=False)  
+    engine = create_engine('sqlite:///DisasterResponse.db')
+    table_name = 'disasterResponse'
+    sql.execute('DROP TABLE IF EXISTS %s'%table_name, engine)
+    df.to_sql(table_name, engine, index=False)
 
 
 def main():
