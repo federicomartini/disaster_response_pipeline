@@ -69,7 +69,7 @@ def save_data(df, database_filename):
             The file name of the SQL Database to create 
     """
     
-    engine = create_engine('sqlite:///DisasterResponse.db')
+    engine = create_engine('sqlite:///' + database_filename)
     table_name = 'disasterResponse'
     sql.execute('DROP TABLE IF EXISTS %s'%table_name, engine)
     df.to_sql(table_name, engine, index=False)
